@@ -6,16 +6,17 @@ import { database } from '../../config';
 export const Network = () => {
   const [ data, setData ] = useState({});
   useEffect(() => {
-    const network = ref(database)
-    onValue(network, (snapshot) => {
+    const networkData = ref(database, '/')
+    onValue(networkData, (snapshot) => {
       const data = snapshot.val();
-      console.log(network)
+      console.log(database)
       setData(data);
     });
   }, [])
   return (
     <div>
       <p>Testing output</p>
+      {console.log('test')}
       {Object.keys(data).length === 0 ? 
         "no data to show here!" 
         : 
