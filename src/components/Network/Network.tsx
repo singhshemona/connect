@@ -9,7 +9,7 @@ export const Network = () => {
     const network = ref(database, '/')
     onValue(network, (snapshot) => {
       const data = snapshot.val();
-      console.log(data)
+      console.log(network)
       setData(data);
     });
   }, [])
