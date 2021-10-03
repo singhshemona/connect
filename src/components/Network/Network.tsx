@@ -6,7 +6,7 @@ import { database } from '../../config';
 export const Network = () => {
   const [ data, setData ] = useState({});
   useEffect(() => {
-    const network = ref(database, '/')
+    const network = ref(database)
     onValue(network, (snapshot) => {
       const data = snapshot.val();
       console.log(network)
