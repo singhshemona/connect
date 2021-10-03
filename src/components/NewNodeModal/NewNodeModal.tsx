@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import './NewNodeModal.scss';
-import { db } from '../../config'
+import { ref, set } from "firebase/database";
+import { database } from '../../config';
 
 export const NewNodeModal = () => {
   const [ prompt, setPrompt ] = useState('')
   const addNode = () => {
-    db.ref('/').push({ 
+    set(ref(database, '/'), {
       prompt: prompt,
     });
   }
