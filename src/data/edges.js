@@ -1,0 +1,6 @@
+export const edges = [
+  { from: 1, to: 2 },
+  { from: 0, to: 2 },
+  { from: 1, to: 0 },
+  { from: 1, to: 1 },
+];
