@@ -2,21 +2,21 @@ import { useState, useEffect, useRef } from 'react';
 import './NetworkData.scss';
 import { ref, onValue } from "firebase/database";
 import { database } from '../../config';
-import { nodes } from '../../data/nodes'
-import { edges } from '../../data/edges'
+import nodes from '../../data/nodes.json'
+import edges from '../../data/edges.json'
 import { Network } from "vis-network";
 
 export const NetworkData: React.FC = () => {
 
-  // const [ data, setData ] = useState({});
+  const [ fireBaseData, setFireBaseData ] = useState({});
   const visJsRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    // const networkData = ref(database, '/')
-    // onValue(networkData, (snapshot) => {
-    //   const data = snapshot.val();
-    //   console.log(database)
-    //   setData(data);
-    // });
+    const networkData = ref(database, '/')
+    onValue(networkData, (snapshot) => {
+      const data = snapshot.val();
+      console.log(data)
+      setFireBaseData(data);
+    });
 
   const network =
     visJsRef.current &&
@@ -40,10 +40,10 @@ export const NetworkData: React.FC = () => {
   return (
     <div className="container">
       <p>Testing output</p>
-      {/* {Object.keys(data).length === 0 ? 
+      {Object.keys(fireBaseData).length === 0 ? 
         "no data to show here!" 
         : 
-        console.log(data)} */}
+        console.log(fireBaseData)}
       
       <div ref={visJsRef} className="network" />
     </div>
