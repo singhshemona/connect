@@ -2,39 +2,37 @@ import { useState, useEffect, useRef } from 'react';
 import './NetworkData.scss';
 import { ref, onValue } from "firebase/database";
 import { database } from '../../config';
-import nodes from '../../data/nodes.json'
-import edges from '../../data/edges.json'
+import nodes from '../../data/nodes.json';
+import edges from '../../data/edges.json';
 import { Network } from "vis-network";
 
 export const NetworkData: React.FC = () => {
 
   const [ fireBaseData, setFireBaseData ] = useState({});
   const visJsRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const networkData = ref(database, '/')
-    onValue(networkData, (snapshot) => {
-      const data = snapshot.val();
-      console.log(data)
-      setFireBaseData(data);
-    });
 
-  const network =
-    visJsRef.current &&
-    new Network(
-      visJsRef.current,
-      { nodes, edges },
-      {
-        autoResize: true,
-        edges: {
-          color: "#411811"
-        }
+  useEffect(() => {
+    onValue(ref(database, 'nodes'), (snapshot) => {
+      const data = snapshot.val();
+      console.log(data);
+    })
+
+    const network =
+      visJsRef.current &&
+      new Network(
+        visJsRef.current,
+        { nodes, edges },
+        {
+          edges: {
+            color: "#411811"
+          }
+        },
+      );
+    network?.on("selectNode", (event: { nodes: string[] }) => {
+      if (event.nodes?.length === 1) {
+        window.location.href = event.nodes[0];
       }
-    );
-  network?.on("selectNode", (event: { nodes: string[] }) => {
-    if (event.nodes?.length === 1) {
-      window.location.href = event.nodes[0];
-    }
-  });
+    });
   }, [visJsRef])
 
   return (
@@ -44,7 +42,8 @@ export const NetworkData: React.FC = () => {
         "no data to show here!" 
         : 
         console.log(fireBaseData)}
-      
       <div ref={visJsRef} className="network" />
     </div>
-  );}
+  );
+}
+
